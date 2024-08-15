@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj": {}
+    "c:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj": {}
   },
   "projects": {
-    "C:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj": {
+    "c:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj",
+        "projectUniqueName": "c:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj",
         "projectName": "sQpets-Backend",
-        "projectPath": "C:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj",
+        "projectPath": "c:\\Repositories\\sQpets-Backend\\sQpets-Backend.csproj",
         "packagesPath": "C:\\Users\\Hamudi\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositories\\sQpets-Backend\\obj\\",
+        "outputPath": "c:\\Repositories\\sQpets-Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Hamudi\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -46,6 +46,16 @@
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[8.0.4, )"
             },
