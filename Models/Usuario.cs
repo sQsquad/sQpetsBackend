@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace sQpets_Backend.Models
 {
-    [Table("tb_usuario")]
     public class Usuario
     {
-        [Key]
-        public Guid iduser {get; set;}
-        public required string nome {get; set;}
-        public required string email {get; set;}
-        public required string senha{get; set;}
+        public Guid IdUser {get; set;}
+        public string Nome {get; set;} = string.Empty;
+        public string Email {get; set;} = string.Empty;
+        public string Senha{get; set;} = string.Empty;
     }
 }
