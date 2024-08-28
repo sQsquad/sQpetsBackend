@@ -2,45 +2,71 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sQpets_Backend.Data;
 using sQpets_Backend.DTO;
+using sQpets_Backend.Interfaces;
 using sQpets_Backend.Models;
+using sQpets_Backend.Repository;
 
 namespace sQpets_Backend.Controllers
 {
     [ApiController]
-    [Route("api/tarefa")]
-    public class TarefaController(ApplicationDBContext context) : ControllerBase
+    [Route("api/[controller]")]
+    public class TarefaController : ControllerBase
     {
-        private readonly ApplicationDBContext _context = context;
+        private readonly ITarefaRepository _repository;
 
-        [HttpGet]
-        public IActionResult GetAll()
+        public TarefaController(ITarefaRepository repository)
         {
-            var tarefas = _context.Tarefa.ToList();
-            if(tarefas == null) return BadRequest();
-            return Ok(tarefas);
+            _repository = repository;
+        }
+
+        [HttpGet("{idUser}")]
+        public async Task<IActionResult> GetAllByUser([FromRoute] string idUser)
+        {
+            var result = await _repository.GetAllTarefasByUser(idUser);
+            
+            if(result.StatusCode == 200) return Ok(result);
+            if(result.StatusCode == 400) return BadRequest(result);
+            if(result.StatusCode == 404) return NotFound(result);
+
+            return StatusCode(500, new { Message = "Erro inesperado do servidor"});
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]CreateTarefaDTO dto)
+        public async Task<IActionResult> Create([FromBody]CreateTarefaDTO dto)
         {
-            var tarefa = Tarefa.Factories.CreateTarefa(dto);
-            _context.Add(tarefa);
-            _context.SaveChanges();
-            return Ok(tarefa);
+            var tarefa = await _repository.CreateTarefa(dto);
+
+            if(tarefa.StatusCode == 201) return CreatedAtAction(tarefa.Data.IdTarefa, tarefa);
+            if(tarefa.StatusCode == 400) return BadRequest(tarefa);
+            
+            return StatusCode(500, new {Message = "Erro inesperado do servidor"});
         }
 
-        [HttpDelete]
-        public IActionResult Delete([FromBody]DeleteTarefaDTO dto) 
+        [HttpDelete("{idTarefa}")]
+        public async Task<IActionResult> Delete([FromRoute]string idTarefa) 
         {
-            var tarefa = _context.Tarefa.Where(x => x.IdTarefa == dto.IdTarefa).FirstOrDefault();
-            if(tarefa == null) return NotFound();
-            _context.Tarefa.Remove(tarefa);
-            _context.SaveChanges();
-            return NoContent();
+            var tarefa = await _repository.DeleteTarefa(idTarefa);
+
+            if (tarefa.StatusCode == 204) return NoContent();
+            if (tarefa.StatusCode == 404) return NotFound();
+
+            return StatusCode(500, new { Message = "Erro inesperado do servidor" });
+        }
+
+        [HttpPut("{idTarefa}")]
+        public async Task<IActionResult> Edit([FromRoute]string idTarefa, [FromBody] EditTarefaDTO dto)
+        {
+            var tarefa = await _repository.EditTarefa(idTarefa, dto);
+            
+            if(tarefa.StatusCode == 404) return NotFound();
+            if(tarefa.StatusCode == 200) return Ok(tarefa);
+            
+            return StatusCode(500, new { Message = "Erro inesperado do servidor" });
         }
     }
 }
