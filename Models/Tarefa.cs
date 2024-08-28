@@ -4,37 +4,47 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using sQpets_Backend.DTO;
+using sQpets_Backend.Validations;
 
 namespace sQpets_Backend.Models
 {
-    public class Tarefa
+    public class Tarefa : BaseEntity, IValidate
     {
-        public Guid IdTarefa {get; set;}
-        public DateTime Data { get; set; }
-        public string Nome { get; set; } = string.Empty;
-        public bool Status { get; set; }
-        public int Tempo { get; set; }
-        public Guid IdUsuario { get; set; }
-        public Guid IdCategoria { get; set; }
-
-        public static class Factories
+        public string IdTarefa {get; private set;} = string.Empty;
+        public DateTime Data { get; private set; }
+        public string Nome { get; private set; } = string.Empty;
+        public bool Status { get; private set; }
+        public int Tempo { get; private set; }
+        public string IdUsuario { get; private set; } = string.Empty;
+        public string IdCategoria { get; private set; } = string.Empty;
+        public static Tarefa CreateTarefa(CreateTarefaDTO dto)
         {
-            public static Tarefa CreateTarefa(CreateTarefaDTO dto)
+            return new Tarefa()
             {
-                if(dto.Nome == string.Empty) throw new Exception("Nome não pode estar vazio");
-                if(dto.Tempo < 0) throw new Exception("O campo tempo não pode ser negativo");
+                IdTarefa = Guid.NewGuid().ToString(),
+                Data = DateTime.UtcNow,
+                Nome = dto.Nome,
+                Status = false,
+                Tempo = dto.Tempo,
+                IdUsuario = dto.IdUsuario,
+                IdCategoria = dto.IdCategoria
+            };
+        }
 
-                return new Tarefa()
-                {
-                    IdTarefa = Guid.NewGuid(),
-                    Data = DateTime.UtcNow,
-                    Nome = dto.Nome,
-                    Status = false,
-                    Tempo = dto.Tempo,
-                    IdUsuario = dto.IdUsuario,
-                    IdCategoria = dto.IdCategoria
-                };
-            }
+        public void EditTarefa(EditTarefaDTO dto)
+        {
+            Nome = dto.Nome;
+            Tempo = dto.Tempo;
+            
+        } 
+
+        public bool IsValid()
+        {
+            return new TarefaValdations(this)
+                .GuidUsuarioIsValid()
+                .GuidCategoriaIsValid()
+                .NomeValidation()
+                .IsValid();
         }
     }
 }
