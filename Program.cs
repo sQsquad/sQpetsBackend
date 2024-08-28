@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using sQpets_Backend.Data;
+using sQpets_Backend.Interfaces;
+using sQpets_Backend.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//Injeção de dependencia
 
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DeafultConnection"));
 });
+
+builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 
 var app = builder.Build();
 
