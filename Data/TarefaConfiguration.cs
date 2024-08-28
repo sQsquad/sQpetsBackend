@@ -17,6 +17,7 @@ namespace sQpets_Backend.Data
             builder.HasKey(x => x.IdTarefa);
             builder.Property(x => x.IdTarefa)
                 .HasColumnName("idtarefa")
+                .HasConversion<Guid>()
                 .ValueGeneratedNever();
 
             builder.Property(x => x.Data)
@@ -37,10 +38,12 @@ namespace sQpets_Backend.Data
 
             builder.Property(x => x.IdUsuario)
                 .HasColumnName("idusuario")
+                .HasConversion<Guid>()
                 .IsRequired();
 
             builder.Property(x => x.IdCategoria)
                 .HasColumnName("idcategoria")
+                .HasConversion<Guid>()
                 .IsRequired();
         }
     }

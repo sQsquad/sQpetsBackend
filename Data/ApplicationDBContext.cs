@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using sQpets_Backend.Models;
+using sQpets_Backend.Notifications;
 
 namespace sQpets_Backend.Data
 {
@@ -20,6 +21,7 @@ namespace sQpets_Backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDBContext).Assembly);
+            modelBuilder.Ignore<Notification>();
             base.OnModelCreating(modelBuilder);
         }
     }
