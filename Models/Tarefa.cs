@@ -10,7 +10,7 @@ namespace sQpets_Backend.Models
 {
     public class Tarefa : BaseEntity, IValidate
     {
-        public string IdTarefa {get; private set;} = string.Empty;
+        public string IdTarefa { get; private set; } = string.Empty;
         public DateTime Data { get; private set; }
         public string Nome { get; private set; } = string.Empty;
         public bool Status { get; private set; }
@@ -35,8 +35,7 @@ namespace sQpets_Backend.Models
         {
             Nome = dto.Nome;
             Tempo = dto.Tempo;
-            
-        } 
+        }
 
         public bool IsValid()
         {

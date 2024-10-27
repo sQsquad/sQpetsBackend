@@ -27,7 +27,7 @@ namespace sQpets_Backend.Data
             builder.Property(x => x.Nome)
                 .HasColumnName("nome")
                 .IsRequired();
-            
+
             builder.Property(x => x.Status)
                 .HasColumnName("status")
                 .IsRequired();

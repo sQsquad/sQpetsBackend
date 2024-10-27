@@ -10,12 +10,13 @@ namespace sQpets_Backend.Data
 {
     public class ApplicationDBContext : DbContext
     {
-        public DbSet<Usuario> Usuario {get; set;}
+        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Tarefa> Tarefa { get; set; }
-        public ApplicationDBContext(DbContextOptions dbContextOptions) 
+        public DbSet<Categoria> Categoria { get; set; }
+        public ApplicationDBContext(DbContextOptions dbContextOptions)
             : base(dbContextOptions)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
