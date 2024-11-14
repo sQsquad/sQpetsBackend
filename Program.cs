@@ -20,7 +20,18 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyPolicy",
+        policy =>
+        {
+            policy.WithOrigins("*").AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("MyPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
