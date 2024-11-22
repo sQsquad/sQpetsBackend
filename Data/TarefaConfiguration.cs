@@ -41,7 +41,7 @@ namespace sQpets_Backend.Data
                 .HasConversion<Guid>()
                 .IsRequired();
 
-            builder.Property(x => x.IdCategoria)
+            builder.Property(x => x.Categoria)
                 .HasColumnName("idcategoria")
                 .HasConversion<Guid>()
                 .IsRequired();

@@ -17,7 +17,7 @@ namespace sQpets_Backend.Validations
 
         public TarefaValdations GuidCategoriaIsValid()
         {
-            if(!Guid.TryParse(_tarefa.IdCategoria, out Guid c))
+            if(!Guid.TryParse(_tarefa.Categoria, out Guid c))
                 _tarefa.AddNotification(new Notification("IdCategoria", "Id invalido"));
             return this;
         }

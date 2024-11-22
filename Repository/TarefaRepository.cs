@@ -19,41 +19,49 @@ namespace sQpets_Backend.Repository
 
         public async Task<ReturnDTO<List<Tarefa>>> GetAllTarefasByUser(string idUser)
         {
-            if(!Guid.TryParse(idUser, out Guid c)) return new ReturnDTO<List<Tarefa>>("Id Usuario Invalido", 400);
+            if (!Guid.TryParse(idUser, out Guid c)) return new ReturnDTO<List<Tarefa>>("Id Usuario Invalido", 400);
             var tarefa = await _context.Tarefa.Where(x => x.IdUsuario == idUser).ToListAsync();
-            if(tarefa.Count == 0) return new ReturnDTO<List<Tarefa>>("Não existe tarefa para esse usuario", 404);
-            return new ReturnDTO<List<Tarefa>>(tarefa, "Sucesso ao recuperar os dados", 200);
+            List<Tarefa> tarefas = new List<Tarefa>();
+            foreach (var tarefa1 in tarefa)
+            {
+                var categ = await _context.Categoria.FirstOrDefaultAsync(x => x.IdCategoria == tarefa1.Categoria);
+                tarefa1.Categoria = categ.Nome;
+                tarefas.Add(tarefa1);
+            }
+            if (tarefa.Count == 0) return new ReturnDTO<List<Tarefa>>("Não existe tarefa para esse usuario", 404);
+            return new ReturnDTO<List<Tarefa>>(tarefas, "Sucesso ao recuperar os dados", 200);
         }
 
         public async Task<ReturnDTO<Tarefa>> CreateTarefa(CreateTarefaDTO dto)
         {
             var tarefa = Tarefa.CreateTarefa(dto);
 
-            if(!tarefa.IsValid()){
+            if (!tarefa.IsValid())
+            {
                 return new ReturnDTO<Tarefa>(tarefa.Notifications, "Por Favor Verifique os Campos", 400);
             }
             await _context.AddAsync(tarefa);
             _context.SaveChanges();
-            
-            return new ReturnDTO<Tarefa>(tarefa, "Tarefa Criada Com Sucesso", 201);
+
+            return new ReturnDTO<Tarefa>(tarefa, "Tarefa Criada Com Sucesso", 200);
         }
 
         public async Task<ReturnDTO<Tarefa>> DeleteTarefa(string id)
         {
             var tarefa = await _context.Tarefa.Where(x => x.IdTarefa == id).FirstOrDefaultAsync();
-            if(tarefa == null) return new ReturnDTO<Tarefa>("Id Invalido", 404);
-            
+            if (tarefa == null) return new ReturnDTO<Tarefa>("Id Invalido", 404);
+
             _context.Tarefa.Remove(tarefa);
             _context.SaveChanges();
             return new ReturnDTO<Tarefa>("Deletada com sucesso", 204);
-            
-            
+
+
         }
 
         public async Task<ReturnDTO<Tarefa>> EditTarefa(string id, EditTarefaDTO dto)
         {
             var tarefa = await _context.Tarefa.Where(x => x.IdTarefa == id).FirstOrDefaultAsync();
-            if(tarefa == null)
+            if (tarefa == null)
                 return new ReturnDTO<Tarefa>("Id Invalido", 404);
             tarefa.EditTarefa(dto);
             _context.SaveChanges();

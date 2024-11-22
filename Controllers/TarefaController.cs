@@ -28,27 +28,27 @@ namespace sQpets_Backend.Controllers
         public async Task<IActionResult> GetAllByUser([FromRoute] string idUser)
         {
             var result = await _repository.GetAllTarefasByUser(idUser);
-            
-            if(result.StatusCode == 200) return Ok(result);
-            if(result.StatusCode == 400) return BadRequest(result);
-            if(result.StatusCode == 404) return NotFound(result);
 
-            return StatusCode(500, new { Message = "Erro inesperado do servidor"});
+            if (result.StatusCode == 200) return Ok(result);
+            if (result.StatusCode == 400) return BadRequest(result);
+            if (result.StatusCode == 404) return NotFound(result);
+
+            return StatusCode(500, new { Message = "Erro inesperado do servidor" });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreateTarefaDTO dto)
+        public async Task<IActionResult> Create([FromBody] CreateTarefaDTO dto)
         {
             var tarefa = await _repository.CreateTarefa(dto);
 
-            if(tarefa.StatusCode == 201) return CreatedAtAction(tarefa.Data.IdTarefa, tarefa);
-            if(tarefa.StatusCode == 400) return BadRequest(tarefa);
-            
-            return StatusCode(500, new {Message = "Erro inesperado do servidor"});
+            if (tarefa.StatusCode == 200) return Ok(tarefa);
+            if (tarefa.StatusCode == 400) return BadRequest(tarefa);
+
+            return StatusCode(500, new { Message = "Erro inesperado do servidor" });
         }
 
         [HttpDelete("{idTarefa}")]
-        public async Task<IActionResult> Delete([FromRoute]string idTarefa) 
+        public async Task<IActionResult> Delete([FromRoute] string idTarefa)
         {
             var tarefa = await _repository.DeleteTarefa(idTarefa);
 
@@ -59,13 +59,13 @@ namespace sQpets_Backend.Controllers
         }
 
         [HttpPut("{idTarefa}")]
-        public async Task<IActionResult> Edit([FromRoute]string idTarefa, [FromBody] EditTarefaDTO dto)
+        public async Task<IActionResult> Edit([FromRoute] string idTarefa, [FromBody] EditTarefaDTO dto)
         {
             var tarefa = await _repository.EditTarefa(idTarefa, dto);
-            
-            if(tarefa.StatusCode == 404) return NotFound();
-            if(tarefa.StatusCode == 200) return Ok(tarefa);
-            
+
+            if (tarefa.StatusCode == 404) return NotFound();
+            if (tarefa.StatusCode == 200) return Ok(tarefa);
+
             return StatusCode(500, new { Message = "Erro inesperado do servidor" });
         }
     }

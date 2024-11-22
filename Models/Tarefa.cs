@@ -16,7 +16,7 @@ namespace sQpets_Backend.Models
         public bool Status { get; private set; }
         public int Tempo { get; private set; }
         public string IdUsuario { get; private set; } = string.Empty;
-        public string IdCategoria { get; private set; } = string.Empty;
+        public string Categoria { get; set; } = string.Empty;
         public static Tarefa CreateTarefa(CreateTarefaDTO dto)
         {
             return new Tarefa()
@@ -27,7 +27,7 @@ namespace sQpets_Backend.Models
                 Status = false,
                 Tempo = dto.Tempo,
                 IdUsuario = dto.IdUsuario,
-                IdCategoria = dto.IdCategoria
+                Categoria = dto.IdCategoria
             };
         }
 
